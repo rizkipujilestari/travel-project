@@ -26,7 +26,7 @@ Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth:api');
 
-Route::middleware(['auth:api'])->group( function () {
+Route::middleware(['auth:api', 'role:admin'])->group( function () {
     // * Manajemen Jadwal Travel
     Route::get('/schedules', [ScheduleController::class, 'index']);
     Route::post('/schedules', [ScheduleController::class, 'create']);
@@ -41,7 +41,7 @@ Route::middleware(['auth:api'])->group( function () {
     
 });
 
-Route::middleware(['auth:api'])->group( function () {
+Route::middleware(['auth:api', 'role:client'])->group( function () {
     // * Pemesanan Tiket Travel
     Route::get('/order-ticket', [ClientOrderController::class, 'index']);
     Route::post('/order-ticket', [ClientOrderController::class, 'create']);

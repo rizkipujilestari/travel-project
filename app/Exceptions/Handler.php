@@ -3,10 +3,12 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Spatie\Permission\Exceptions\UnauthorizedException;
+use Illuminate\Http\Request;
 use Throwable;
 
 class Handler extends ExceptionHandler
-{
+{    
     /**
      * A list of the exception types that are not reported.
      *
@@ -37,5 +39,17 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+
+        $this->renderable(function (UnauthorizedException $e, Request $request) {
+            if ($request->is('api/*')) {
+                $response = [
+                    'status'  => 403,
+                    'message' => 'Access Forbidden!',
+                    'data'    => [],
+                ];
+                return response()->json($response, 403);
+            }
+        });
+    
     }
 }
