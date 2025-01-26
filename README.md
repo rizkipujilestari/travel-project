@@ -3,6 +3,12 @@
 Project ini merupakan hasil pengerjaan dari test programming online.
 Author : Rizki Puji Lestari 
 
+Feature : 
+- **Authentication with Laravel Passport**
+- **Create and Read data Routes**
+- **Create and Read data Schedules**
+- **Create and Read data Order Tickets**
+
 Database : 
 - DB_CONNECTION=pgsql
 - DB_HOST=127.0.0.1
@@ -13,16 +19,10 @@ Database :
 Backend : 
 Laravel 8
 
-Feature : 
-- **Authentication with Laravel Passport**
-- **Create and Read data Routes**
-- **Create and Read data Schedules**
-- **Create and Read data Order Tickets**
-
 Frontend : 
 Bootsrap template (tidak keburu waktu)
 
-## How to Running
+## How to Run Project
 
 Adapun cara untuk menjalankan aplikasi ini adalah
 
