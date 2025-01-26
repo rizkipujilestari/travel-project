@@ -9,6 +9,22 @@ use Throwable;
 
 class Handler extends ExceptionHandler
 {    
+    public function render($request, Throwable $exception)
+    {
+        $response = parent::render($request, $exception);
+
+        if ($response->getStatusCode() === 404) {
+            $response = [
+                'status'  => 404,
+                'message' => 'Not found!',
+                'data'    => [],
+            ];
+            return response()->json($response, 404);
+        }
+
+        return $response;
+    }
+
     /**
      * A list of the exception types that are not reported.
      *

@@ -23,6 +23,12 @@ class UserSeeder extends Seeder
             'password' => Hash::make('admin1234'),
             'phone'    => '081322286797',
         ]);
+        DB::table('users')->insert([
+            'name'     => 'Bayu Bambang',
+            'email'    => 'bayubambang@gmail.com',
+            'password' => Hash::make('bayu1234'),
+            'phone'    => '081388889999',
+        ]);
         
         DB::table('oauth_clients')->insert([
             'name'       => 'personal-access-token',

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Frontend\PageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,10 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return response(['status' => 403, 'message' => 'Access Forbidden!']);
-});
-
-Route::get('/login', function () {
-    return response(['status' => 401, 'message' => 'Unauthorized!']);
-})->name('login');
+Route::get('/', [PageController::class, 'home']);
+Route::get('/login', [PageController::class, 'login'])->name('login');
+Route::get('/vehicles', [PageController::class, 'vehicles']);
+Route::get('/about', [PageController::class, 'about']);
+Route::get('/contact', [PageController::class, 'contact']);

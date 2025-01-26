@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
@@ -11,9 +12,13 @@ class ReportController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $limit = $request->query('limit', 10);
+        $page  = $request->query('page', 1);
+
+        $report = Order::paginate($limit, ['*'], 'page', $page);
+        return $this->sendResponse('Get Data Success!', $report);
     }
 
     /**

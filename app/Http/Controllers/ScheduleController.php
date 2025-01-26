@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Schedule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ScheduleController extends Controller
 {
@@ -11,9 +13,13 @@ class ScheduleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $limit = $request->query('limit', 10);
+        $page  = $request->query('page', 1);
+
+        $schedules = Schedule::paginate($limit, ['*'], 'page', $page);
+        return $this->sendResponse('Get Data Success!', $schedules);
     }
 
     /**
@@ -34,7 +40,31 @@ class ScheduleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'origin'         => 'required',
+            'destination'    => 'required',
+            'departure_date' => 'required',
+            'departure_time' => 'required',
+            'arrival_date'   => 'required',
+            'arrival_time'   => 'required',
+            'price'          => 'required',
+            'quota'          => 'required|max:10',
+            'duration'       => 'required',
+            'description'    => 'required',
+        ]);
+        
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
+        
+        try {
+            $input = $request->all();
+            $data = Schedule::create($input);
+            return $this->sendResponse('Success create new data!', $data);
+            
+        } catch (\Throwable $e) {
+            return $this->sendError('Failed! ', $e->getMessage());
+        }
     }
 
     /**

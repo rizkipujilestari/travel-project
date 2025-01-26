@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Route;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class RouteController extends Controller
 {
@@ -11,9 +13,13 @@ class RouteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $limit = $request->query('limit', 10);
+        $page  = $request->query('page', 1);
+
+        $routes = Route::paginate($limit, ['*'], 'page', $page);
+        return $this->sendResponse('Get Data Success!', $routes);
     }
 
     /**
@@ -34,7 +40,26 @@ class RouteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'route_name' => 'required',
+            'route_code' => 'required',
+            'route_address' => 'required',
+            'route_city' => 'required',
+            'route_description' => 'required',
+        ]);
+        
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
+        
+        try {
+            $input = $request->all();
+            $data = Route::create($input);
+            return $this->sendResponse('Success create new data!', $data);
+            
+        } catch (\Throwable $e) {
+            return $this->sendError('Failed! ', $e->getMessage());
+        }
     }
 
     /**

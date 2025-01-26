@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
@@ -11,9 +14,13 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $limit = $request->query('limit', 10);
+        $page  = $request->query('page', 1);
+
+        $orders = Order::paginate($limit, ['*'], 'page', $page);
+        return $this->sendResponse('Get Data Success!', $orders);
     }
 
     /**
@@ -34,7 +41,40 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'user_id'           => 'required',
+            'schedule_id'       => 'required',
+            'total_passengers'  => 'required',
+            'total_price'       => 'required',
+            'payment_method'    => 'required',
+            'payment_receipt'   => 'nullable',
+            'passengers'        => 'required',
+        ]);
+        
+        if($validator->fails()){
+            return $this->sendError('Validation Error.', $validator->errors());       
+        }
+        
+        try {
+            $input = $request->all();
+            $order = Order::create($input);
+            $orderId = $order->id;
+    
+            // Create tickets
+            if ($request->has('passengers')) {
+                foreach ($request->input('passengers') as $passengerData) {
+                    Ticket::create([
+                        'order_id' => $orderId, 
+                        'passenger_name' => $passengerData['passenger_name'],
+                        'passenger_age'  => $passengerData['passenger_age'],
+                    ]);
+                }
+            }    
+            return $this->sendResponse('Success create new data!', $order);
+            
+        } catch (\Throwable $e) {
+            return $this->sendError('Failed! ', $e->getMessage());
+        }
     }
 
     /**
