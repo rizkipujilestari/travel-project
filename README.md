@@ -4,11 +4,11 @@ Project ini merupakan hasil pengerjaan dari test programming online.
 Author : Rizki Puji Lestari 
 
 Database : 
-DB_CONNECTION=pgsql
-DB_HOST=127.0.0.1
-DB_PORT=5432
-DB_DATABASE=travel_project
-DB_USERNAME=postgres
+- DB_CONNECTION=pgsql
+- DB_HOST=127.0.0.1
+- DB_PORT=5432
+- DB_DATABASE=travel_project
+- DB_USERNAME=postgres
 
 Backend : 
 Laravel 8
@@ -27,7 +27,8 @@ Bootsrap template (tidak keburu waktu)
 Adapun cara untuk menjalankan aplikasi ini adalah
 
 - **Clone Project to local**
-- **Download and setup database, then import to local or run command 'php artisan migrate --seed'**
+- **Create database 'travel_project', then download sql and import to local or run command 'php artisan migrate --seed'**
+- **Copy .env.example then rename to .env**
 - **Run command 'npm install'**
 - **Run project with command 'php artisan serve'**
 
