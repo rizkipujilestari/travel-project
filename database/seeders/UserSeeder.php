@@ -19,6 +19,7 @@ class UserSeeder extends Seeder
             'name' => 'Superadmin',
             'email' => 'superadmin@travel.com',
             'password' => Hash::make('admin1234'),
+            'phone' => '081322286797',
         ]);
     }
 }

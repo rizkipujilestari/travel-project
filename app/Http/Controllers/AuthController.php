@@ -44,9 +44,9 @@ class AuthController extends Controller
         } catch (\Throwable $e) {
             return $this->sendError('Failed! ', $e->getMessage());
         }
-
+        
     }
-
+    
     /**
      * register a newly created resource in storage.
      *
@@ -57,7 +57,7 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name'             => 'required',
-            'email'            => 'required|email',
+            'email'            => 'required|email|unique:users',
             'password'         => 'required',
             'confirm_password' => 'required|same:password',
         ]);
@@ -65,13 +65,17 @@ class AuthController extends Controller
         if($validator->fails()){
             return $this->sendError('Validation Error.', $validator->errors());       
         }
-   
-        $input = $request->all();
-        $input['password'] = Hash::make($input['password']);
-        $user = User::create($input);
-        $data['email'] =  $user->email;
-   
-        return $this->sendResponse('Success Register User! Please Login.', $data);
+        
+        try {
+            $input = $request->all();
+            $input['password'] = Hash::make($input['password']);
+            $user = User::create($input);
+            $data['email'] =  $user->email;
+            return $this->sendResponse('Success Register User! Please Login.', $data);
+            
+        } catch (\Throwable $e) {
+            return $this->sendError('Failed! ', $e->getMessage());
+        }
     }
     
     public function logout(Request $request)

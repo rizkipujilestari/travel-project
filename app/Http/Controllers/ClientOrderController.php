@@ -2,23 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class ClientOrderController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $limit = $request->query('limit', 10);
-        $page  = $request->query('page', 1);
-
-        $users = User::paginate($limit, ['*'], 'page', $page);
-        return $this->sendResponse('Get Data Success!', $users);
+        //
     }
 
     /**
